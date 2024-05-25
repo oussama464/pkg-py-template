@@ -48,7 +48,7 @@ jobs:
       - name: 'run tests'
         run: |
           make install
-          make tests
+          make testing
   push-tags:
     needs:
       - execute-tests

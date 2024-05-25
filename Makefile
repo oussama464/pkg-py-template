@@ -18,5 +18,5 @@ lint:
 	bash run.sh lint
 lint-ci:
 	bash run.sh lint:ci 
-tests:
+testing:
 	bash run.sh run-tests
