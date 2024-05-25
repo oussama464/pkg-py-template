@@ -6,8 +6,8 @@ if TYPE_CHECKING:
 
 
 def test__liniting_passes(project_dir: "Path"):
-    subprocess.run(["make", "lint-ci"], text=True, cwd=str(project_dir), capture_output=True, check=True)
-    subprocess.run(["make", "lint-ci"], text=True, check=True, cwd=str(project_dir))
+    subprocess.run(["make", "lint-ci"], text=True, cwd=project_dir, capture_output=True)
+    subprocess.run(["make", "lint-ci"], text=True, check=True, cwd=project_dir)
 
 
 def test__tests_pass(project_dir: "Path"):
