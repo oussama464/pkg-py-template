@@ -33,8 +33,6 @@ jobs:
         run: |
           /bin/bash -x run.sh lint:ci
   execute-tests:
-    needs:
-      - lint-format-and-static-code-checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,7 +40,12 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: 3.8
-      - name: 'Lint, Format, and other static code quality checks'
+      - name: Configure git cli
+        run: |
+          git config --global user.email "blabla@pyth.com"
+          git config --global user.name "OM"
+        
+      - name: 'run tests'
         run: |
           make install
           make tests
