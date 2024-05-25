@@ -1,0 +1,60 @@
+name: 'Build, Test'
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+      - main
+  workflow_dispatch: null
+jobs:
+  check-version-txt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Tag with the release version
+        run: |
+          git tag $(cat version.txt)
+  lint-format-and-static-code-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+      - name: 'Lint, Format, and other static code quality checks'
+        run: |
+          /bin/bash -x run.sh lint:ci
+  execute-tests:
+    needs:
+      - lint-format-and-static-code-checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: 'Lint, Format, and other static code quality checks'
+        run: |
+          make install
+          make tests
+  push-tags:
+    needs:
+      - execute-tests
+      - lint-format-and-static-code-checks
+      - check-version-txt
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Push tags
+        run: |
+          git push origin --tags
