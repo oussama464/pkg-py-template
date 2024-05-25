@@ -29,6 +29,7 @@ disable = [
     "import-error",
     "too-few-public-methods",
     "redefined-outer-name",
+    "missing-module-docstring"
 ]
 
 [tool.ruff]

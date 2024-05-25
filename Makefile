@@ -17,6 +17,6 @@ generate-project:
 lint:
 	bash run.sh lint
 lint-ci:
-	bash run.sh lint:ci 
+	bash run.sh lint:ci
 testing:
 	bash run.sh run-tests
